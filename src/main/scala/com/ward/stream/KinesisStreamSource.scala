@@ -49,10 +49,10 @@ object KinesisStreamSource {
 
   def apply(
       kinesisStream: String,
-      kinesisConsumer: KinesisStreamClients
+      kinesisClients: KinesisStreamClients
   )(implicit actorSystem: ActorSystem): Source[CommittableRecord, Future[Scheduler]] =
     KinesisSchedulerSource(
-      builder(kinesisStream, kinesisConsumer),
+      builder(kinesisStream, kinesisClients),
       KinesisSchedulerSourceSettings.defaults
     )
 }

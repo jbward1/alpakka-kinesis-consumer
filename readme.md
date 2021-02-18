@@ -3,6 +3,12 @@
 This project attempts to use `akka-stream-alpakka-kinesis` along with 
 the `amazon-kinesis-client` to connect to a `locakstack` KCL consumer.
 
+## Install AWS Local CLI
+aws-cli version 2
+```bash
+pip install awscli-local
+```
+
 ## Running
 This is a multi-step process, so apologies.
 

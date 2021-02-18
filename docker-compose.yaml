@@ -4,6 +4,8 @@ services:
     image: localstack/localstack:0.12.6
     container_name: stream-localstack
     environment:
+      - AWS_ACCESS_KEY_ID=foobar
+      - AWS_SECRET_ACCESS_KEY=foobar
       - SERVICES=dynamodb,kinesis,cloudwatch
       - LAMBDA_REMOTE_DOCKER=false
       - DATA_DIR=/tmp/localstack

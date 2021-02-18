@@ -4,6 +4,7 @@ import akka.actor.ActorSystem
 import akka.stream.scaladsl.Sink
 import com.github.matsluni.akkahttpspi.AkkaHttpClient
 import com.typesafe.scalalogging.LazyLogging
+import software.amazon.awssdk.auth.credentials.{AwsBasicCredentials, StaticCredentialsProvider}
 import software.amazon.awssdk.services.cloudwatch.CloudWatchAsyncClient
 import software.amazon.awssdk.services.dynamodb.DynamoDbAsyncClient
 import software.amazon.awssdk.services.kinesis.KinesisAsyncClient
@@ -17,10 +18,19 @@ object Server extends App with LazyLogging {
   private val localStackDocker = URI.create(Config.localStackHostname)
   private val akkaHttpClient   = AkkaHttpClient.builder().withActorSystem(system).build()
 
+  private lazy val awsCredentials =
+    StaticCredentialsProvider.create(
+      AwsBasicCredentials.create(
+        "foobar",
+        "foobar",
+      )
+    )
+
   private val kinesisClient: KinesisAsyncClient =
     KinesisAsyncClient
       .builder()
       .endpointOverride(localStackDocker)
+      .credentialsProvider(awsCredentials)
       .region(Config.region)
       .httpClient(akkaHttpClient)
       .build()
@@ -29,6 +39,7 @@ object Server extends App with LazyLogging {
     DynamoDbAsyncClient
       .builder()
       .endpointOverride(localStackDocker)
+      .credentialsProvider(awsCredentials)
       .region(Config.region)
       .httpClient(akkaHttpClient)
       .build()
@@ -37,6 +48,7 @@ object Server extends App with LazyLogging {
     CloudWatchAsyncClient
       .builder()
       .endpointOverride(localStackDocker)
+      .credentialsProvider(awsCredentials)
       .region(Config.region)
       .httpClient(akkaHttpClient)
       .build()
