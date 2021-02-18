@@ -1,0 +1,13 @@
+version: '3.8'
+services:
+  localstack:
+    image: localstack/localstack:0.12.6
+    container_name: stream-localstack
+    environment:
+      - SERVICES=dynamodb,kinesis,cloudwatch
+      - LAMBDA_REMOTE_DOCKER=false
+      - DATA_DIR=/tmp/localstack
+    volumes:
+      - ./.localstack:/tmp/localstack
+    ports:
+      - 4566:4566
